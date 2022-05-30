@@ -37,6 +37,13 @@ namespace Mirror.Examples.Pong
             Debug.Log(playerPrefab);
 
             GameObject player = Instantiate(playerPrefab, start.position, start.rotation);
+
+            if (numPlayers == 0 || numPlayers == 2) {
+                player.GetComponent<SpriteRenderer>().material.color = Color.red;
+            } else {
+                player.GetComponent<SpriteRenderer>().material.color = Color.blue;
+            }
+
             NetworkServer.AddPlayerForConnection(conn, player);
 
             // spawn ball if two players
