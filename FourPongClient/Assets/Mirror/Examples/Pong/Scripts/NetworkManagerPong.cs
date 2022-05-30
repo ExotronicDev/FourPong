@@ -13,16 +13,29 @@ namespace Mirror.Examples.Pong
     [AddComponentMenu("")]
     public class NetworkManagerPong : NetworkManager
     {
-        public Transform leftRacketSpawn;
-        public Transform rightRacketSpawn;
-        public Transform upRacketSpawn;
-        public Transform downRacketSpawn;
+        public Transform backLeftRacketSpawn;
+        public Transform backRightRacketSpawn;
+        public Transform frontLeftRacketSpawn;
+        public Transform frontRightRacketSpawn;
         GameObject ball;
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
             // add player at correct spawn position
-            Transform start = numPlayers == 0 ? upRacketSpawn : downRacketSpawn;
+            //Transform start = numPlayers == 0 ? upRacketSpawn : downRacketSpawn;
+            Transform start;
+            if (numPlayers == 0) {
+                start = backLeftRacketSpawn;
+            } else if (numPlayers == 1) {
+                start = backRightRacketSpawn;
+            } else if (numPlayers == 2) {
+                start = frontLeftRacketSpawn;
+            } else {
+                start = frontRightRacketSpawn;
+            }
+
+            Debug.Log(playerPrefab);
+
             GameObject player = Instantiate(playerPrefab, start.position, start.rotation);
             NetworkServer.AddPlayerForConnection(conn, player);
 
